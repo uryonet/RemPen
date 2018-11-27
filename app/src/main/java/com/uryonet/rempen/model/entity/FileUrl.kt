@@ -1,5 +1,4 @@
 package com.uryonet.rempen.model.entity
 
-class FileUrl : PhotoListItem() {
-    val fileUrl: String? = null
+class FileUrl(fileUrl: String) : PhotoListItem() {
 }

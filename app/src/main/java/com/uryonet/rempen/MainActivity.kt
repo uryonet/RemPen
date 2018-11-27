@@ -1,14 +1,20 @@
 package com.uryonet.rempen
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.moshi.responseObject
+import com.uryonet.rempen.model.entity.DirName
+import com.uryonet.rempen.model.entity.FileUrl
+import com.uryonet.rempen.model.entity.PhotoList
+import com.uryonet.rempen.model.entity.PhotoListItem
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    var photoUrlList: MutableList<PhotoListItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +22,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            getPhotoListData()
         }
     }
 
@@ -34,6 +39,22 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun getPhotoListData() {
+        "http://192.168.0.1/v1/photos".httpGet().responseObject<PhotoList>{ req, res, result ->
+            val(photoList, err) = result
+            println(photoList?.errCode)
+            photoList?.dirs?.forEach {
+                val dirName: DirName = DirName(it.name)
+                photoUrlList.add(dirName)
+                it.files.forEach {
+                    val fileUrl: FileUrl = FileUrl(it)
+                    photoUrlList.add(fileUrl)
+                }
+            }
+            println(photoUrlList.size)
         }
     }
 }

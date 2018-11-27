@@ -1,5 +1,4 @@
 package com.uryonet.rempen.model.entity
 
-class DirName : PhotoListItem() {
-    val dirName: String? = null
+class DirName(dirName: String) : PhotoListItem() {
 }
