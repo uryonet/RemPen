@@ -1,4 +1,4 @@
 package com.uryonet.rempen.model.entity
 
-class FileUrl(fileUrl: String) : PhotoListItem() {
+class FileUrl(dirName: String, fileUrl: String) : PhotoListItem() {
 }
