@@ -13,6 +13,7 @@ import com.uryonet.rempen.model.entity.DirName
 import com.uryonet.rempen.model.entity.FileUrl
 import com.uryonet.rempen.model.entity.PhotoList
 import com.uryonet.rempen.model.entity.PhotoListItem
+import com.uryonet.rempen.presentation.view.adapter.PhotoListAdapter
 import kotlinx.android.synthetic.main.fragment_photo_list.*
 
 class PhotoListFragment : Fragment() {
@@ -42,7 +43,16 @@ class PhotoListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        rvPhotoList.layoutManager = GridLayoutManager(context, 3)
+        val glm = GridLayoutManager(context, 3)
+        glm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(p0: Int): Int {
+                return when (photoUrlList.get(p0)) {
+                    is DirName -> 3
+                    else -> 1
+                }
+            }
+        }
+        rvPhotoList.layoutManager = glm
     }
 
     private fun getPhotoList() {
@@ -64,8 +74,10 @@ class PhotoListFragment : Fragment() {
     }
 
     private fun displayPhotoList() {
+        println("displayphotolist")
         if(!photoUrlList.isEmpty()) {
-            rvPhotoList.adapter =
+            println("run photourllist")
+            rvPhotoList.adapter = PhotoListAdapter(photoUrlList)
         }
     }
 

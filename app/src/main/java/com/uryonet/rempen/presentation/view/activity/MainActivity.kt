@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, PhotoListFragment.newInstance(), PhotoListFragment.TAG).commit()
+        transaction.add(R.id.fragment_container, PhotoListFragment.newInstance()).commit()
 
         fab.setOnClickListener { view ->
             getPhotoListData()
